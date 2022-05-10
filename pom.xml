@@ -151,10 +151,10 @@
 					<execution>
 						<id>test</id>
 						<phase>test</phase>
-						<goals>
+						<!-- <goals>
 							<goal>test</goal>
 							<goal>coverage-report</goal>
-						</goals>
+						</goals> -->
 					</execution>
 				</executions>
 				<configuration>
