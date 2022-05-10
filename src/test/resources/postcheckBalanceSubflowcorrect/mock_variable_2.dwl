@@ -1,0 +1,4 @@
+{
+  "bank": "AXIS",
+  "type": "savings"
+}

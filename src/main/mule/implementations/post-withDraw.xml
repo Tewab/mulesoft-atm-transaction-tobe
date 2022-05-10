@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<sub-flow name="post-withDrawSub_Flow" doc:id="af66adaa-bcdd-43c3-b036-306d189cbd59" >
+		<logger level="INFO" doc:name="post-withDrawFlowStarted" doc:id="98f7ee1d-7c2d-4d8f-ad93-10d6846d81c1" message="#[payload]"/>
+		<ee:transform doc:name="payloadAndAttributes-Variables" doc:id="18f4679a-d9b5-4a51-81ff-7d0110b43bc6" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="witPayl" ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-variable>
+				<ee:set-variable variableName="atmQpar" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="postCheckBalanceFlowReference" doc:id="df930a74-5f31-4bbd-9e56-ee7018380618" name="post-checkBalanceSub_Flow"/>
+		<ee:transform doc:name="Transform Message" doc:id="cb46f0c8-283c-4f81-a270-e90a387660bf" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+if(vars.selInpVar == []) payload
+else if(vars.selInpVar != [] and vars.selInpVar.accountStatus[0] == "Active" and vars.selInpVar.atmPin[0] == vars.witPayl.atmPin and vars.selInpVar.totalBalance[0] > vars.witPayl.amountToBeWithdraw) vars.selInpVar.totalBalance[0] 
+else if(vars.selInpVar.totalBalance[0] < vars.witPayl.amountToBeWithdraw) "Insufficient Fund"
+else  payload
+//vars.selPaylo.totalBalance[0] > vars.witPayl.amountToBeWithdraw
+//"Account 1234567890 does not exist. Enter Valid Details"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="mappedDataForChoice" doc:id="b0d03810-4847-4859-8171-ded78fa90410" message="#[payload]"/>
+		<choice doc:name="Choice" doc:id="866fb14d-492f-43c8-9871-1e7ff6014468">
+			<when expression='#[payload == vars.selInpVar.totalBalance[0]]'>
+				<ee:transform doc:name="Transform Message" doc:id="f282fa8e-d7a5-4b1a-82b1-fe715a76b7cf">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+payload - vars.witPayl.amountToBeWithdraw]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+				<try doc:name="Try" doc:id="3e5d7a19-d6b0-43dc-b5ca-b0ce73468f40" >
+					<db:update doc:name="Update" doc:id="c20f9803-6504-46f3-b338-9e6d97bd7e65" config-ref="Database_Config">
+					<reconnect />
+						<db:sql><![CDATA[update Bank_Transactions set totalBalance=:totalBalance where pk= :pk;]]></db:sql>
+					<db:input-parameters><![CDATA[#[{
+	pk: vars.selInpVar.pk[0],
+	totalBalance: payload
+}]]]></db:input-parameters>
+				</db:update>
+					<error-handler>
+						<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="39ff186d-db98-4577-86a3-7ba3debb35db" type="ANY">
+							<ee:transform doc:name="Transform Message" doc:id="c3c831cd-2445-4bb4-88c1-b1f3f15068f6" >
+								<ee:message >
+									<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+error]]></ee:set-payload>
+								</ee:message>
+							</ee:transform>
+						</on-error-propagate>
+					</error-handler>
+				</try>
+				<try doc:name="Try" doc:id="76ab5aaf-a29e-47a6-9c64-7c437852ad58" >
+					<email:send doc:name="Send" doc:id="e31bf815-1d08-41c6-88a5-d4eaecada48a" config-ref="Email_SMTP" fromAddress="${secure::email.userE}" subject=" Transaction Alert !">
+					<email:to-addresses>
+						<email:to-address value="#[vars.selInpVar.mailId[0]]" />
+					</email:to-addresses>
+					<email:body contentType="text/plain">
+						<email:content><![CDATA[#["This is to inform you that Your Account has been debited with " ++ vars.witPayl.amountToBeWithdraw ++ " and your Total Balance is " ++ vars.selInpVar.totalBalance[0] - vars.witPayl.amountToBeWithdraw]]]></email:content>
+					</email:body>
+				</email:send>
+					<error-handler >
+						<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f96582b1-1866-4682-979f-ad9403693a72" type="EMAIL:CONNECTIVITY">
+							<ee:transform doc:name="Transform Message" doc:id="997d1098-53cb-41d2-89b0-c93e6e440ab2" >
+								<ee:message >
+									<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+error]]></ee:set-payload>
+								</ee:message>
+							</ee:transform>
+						</on-error-propagate>
+					</error-handler>
+				</try>
+				<ee:transform doc:name="Transform Message" doc:id="d89e33ea-4fab-43e9-8707-9bc024340bb6">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+   status: 200,
+   message: "Amount " ++ vars.witPayl.amountToBeWithdraw ++ " is debited. Your total balance is " ++ vars.selInpVar.totalBalance[0] - vars.witPayl.amountToBeWithdraw
+}]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<ee:transform doc:name="Transform Message" doc:id="58a049ae-d496-41e3-b102-1a964cd30104">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+if(payload == "Insufficient Fund.") "Insufficient Fund."
+else payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+			</otherwise>
+		</choice>
+		<logger level="INFO" doc:name="post-withDrawFlowEnded" doc:id="b5dfab2e-2368-47d4-8136-d39848e10fee" message="#[payload]"/>
+	</sub-flow>
+</mule>

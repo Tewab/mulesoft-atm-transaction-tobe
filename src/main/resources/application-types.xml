@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="test-schedulerExample" format="json">
+      <types:shape format="weave" example="examples/selectAllDetailExample.json"><![CDATA[%dw 2.0
+
+type test_schedulerExample = Array<{|  atmPin: String,   accountType: String,   phoneNumber: String,   ifscCode: String,   wrongPin: Number {"typeId": "int"},   accountStatus: String,   custAccNum: String,   mailId: String,   pk: Number {"typeId": "int"},   bankName: String,   transactionTimeStamp: String,   totalBalance: Number {"typeId": "double"},   custName: String,   branchName: String|}> {"example": "[{\\\"atmPin\\\":\\\"1171\\\",\\\"accountType\\\":\\\"savings\\\",\\\"phoneNumber\\\":\\\"7032545600\\\",\\\"ifscCode\\\":\\\"2291\\\",\\\"wrongPin\\\":0,\\\"accountStatus\\\":\\\"Active\\\",\\\"custAccNum\\\":\\\"1115167451\\\",\\\"mailId\\\":\\\"simreteaab@gmail.com\\\",\\\"pk\\\":1,\\\"bankName\\\":\\\"AXIS\\\",\\\"transactionTimeStamp\\\":\\\"2022-01-25-03:4:55\\\",\\\"totalBalance\\\":2000.000000000,\\\"custName\\\":\\\"Andromeda\\\",\\\"branchName\\\":\\\"Maryland\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+</types:mule>

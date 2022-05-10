@@ -1,0 +1,19 @@
+http:
+  host: "0.0.0.0"
+  port: "8081"
+  path: "![cMBqtwue/tgpcLE8NptSVA==]"
+db: 
+  hostD: "![drnBFByxpeygMp7Hfj+zyUA7N2TZqNHjVvbx3mvmHv+D1YZHORlJHRFYtqMbAxcLGkf+TwnqF7P2k+XK2OHCRg==]"
+  portD: "![2t1urlFDnZ5e5rncr+mSkg==]"
+  userD: "![PEcHngKJwgJU7moYTqnx6Q==]"
+  passwordD: "![HhItQYLBa+n5rIPmhgwEfw==]"
+  database: "bank"
+email:
+  host: "smtp.gmail.com"
+  port: "587"
+  userE: "![ndSJK0T6dFAROShlrPn2VbgVSC6KXGn2/SU/8LCdhkU=]"
+  passwordE: "![Umljv3PVOkxHqTGuwONuew==]"
+amazon_S3: 
+  accessKey: "![3MZr3ZuHvx7MgFVxdrZ1iz2arZrKNmt4Y3nbHM8vwWY=]"
+  secretKey: "![82FQUiOTMX/0kqhg8P0TQ2cWLjNrsvv4ck0YMDGgPqF0OcsHrPqa+PyLT4HbBbrn]"
+  region: "US East (N. Virginia)"

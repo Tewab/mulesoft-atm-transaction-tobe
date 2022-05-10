@@ -1,0 +1,13 @@
+#%RAML 1.0 DataType
+properties:
+  user:
+    default: admin
+  password:
+    default: admin
+  accountNum:
+    type: string
+    required: true
+    maxLength: 10
+    minLength: 10
+  bank:
+    enum: [ICICI,AXIS,HDFC]  

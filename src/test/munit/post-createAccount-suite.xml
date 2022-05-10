@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="post-createAccount-suite.xml" />
+	<munit:test name="post-createAccountSub_Flow-positive" doc:id="940eca1f-8ffd-4723-a76c-23d4fb2ad011" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="20caaf5f-fdac-49fa-b23a-200ed48696eb" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8dc93e3d-9a14-452d-8707-12e25791d8fd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowpositive\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowpositive\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowpositive\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowpositive\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="9adf2da3-25a0-47a9-afab-1abd49156da1" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcreateAccountSubFlowpositive\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowpositive\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-createAccountSub_Flow" doc:id="d5a194f9-475e-4677-be1b-f32ea3ad26f8" name="post-createAccountSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="8a9293a3-2def-45fd-92a2-f14e36ddf4ad" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcreateAccountSubFlowpositive::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post-createAccountSub_Flow-create" doc:id="24ccd402-4f8f-4b22-99e4-94dd7ff815f3" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock InsertNewCustomerData" doc:id="3b8b3c13-0bda-408f-8bce-505ce7883fa2" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c07be443-e2dd-4377-b989-7158d9445df0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="3ae9eccd-7123-4beb-a671-c5437e5e6854" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8dc93e3d-9a14-452d-8707-12e25791d8fd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_4.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_5.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Send" doc:id="16afc36f-a206-4df7-b696-a79bff575db8" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4e6b85da-f68b-43fb-b0dd-2fec5be9c4ea" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_8.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_9.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Create object" doc:id="892287c7-6fba-4156-ab81-30b3982d5cf8" processor="s3:create-object">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="45843010-7c1c-4b98-9aed-46d2d32a1b15" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_12.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_13.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_14.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_15.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_16.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectAllDetailsFlowReference" doc:id="4a26c952-99fb-4083-af62-fbe043aba12d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="10be8c2d-7a08-4cec-9d19-c95088dde39a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_17.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_18.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_19.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_21.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="82e74000-c580-44eb-867c-9fc711070230" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcreateAccountSubFlowcreate\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-createAccountSub_Flow" doc:id="1759372f-6487-4d19-b856-f10ca4ffa87b" name="post-createAccountSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="5e5fec66-d657-4545-9e40-4275c047b3d4" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcreateAccountSubFlowcreate::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	
+		<munit:test name="post-createAccountSub_Flow-insertError" doc:id="24ccd402-4f8f-4b22-99e4-94dd7ff815f3" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock InsertNewCustomerData" doc:id="3b8b3c13-0bda-408f-8bce-505ce7883fa2" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c07be443-e2dd-4377-b989-7158d9445df0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					
+					<munit-tools:error typeId="ANY" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="3ae9eccd-7123-4beb-a671-c5437e5e6854" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8dc93e3d-9a14-452d-8707-12e25791d8fd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_4.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_5.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Send" doc:id="16afc36f-a206-4df7-b696-a79bff575db8" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4e6b85da-f68b-43fb-b0dd-2fec5be9c4ea" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_8.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_9.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Create object" doc:id="892287c7-6fba-4156-ab81-30b3982d5cf8" processor="s3:create-object">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="45843010-7c1c-4b98-9aed-46d2d32a1b15" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_12.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_13.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_14.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_15.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_16.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectAllDetailsFlowReference" doc:id="4a26c952-99fb-4083-af62-fbe043aba12d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="10be8c2d-7a08-4cec-9d19-c95088dde39a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_17.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_18.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_19.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_21.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="82e74000-c580-44eb-867c-9fc711070230" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcreateAccountSubFlowcreate\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="cb42242f-4d10-46dd-87ad-0737021df009" >
+				<flow-ref doc:name="Flow-ref to post-createAccountSub_Flow" doc:id="1759372f-6487-4d19-b856-f10ca4ffa87b" name="post-createAccountSub_Flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a2321397-37e9-436e-9d86-30a115eb3445" >
+						<logger level="INFO" doc:name="Logger" doc:id="11055fc4-ea36-4e87-be90-54cd1d7736d9" message="*****continue*****"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="063b3ace-760a-4ba5-a537-23d61220177b" expression="#[error]" is="#[MunitTools::equalTo(error.description)]"/>
+
+		</munit:validation>
+	
+</munit:test>
+
+	<munit:test name="post-createAccountSub_Flow-emailError" doc:id="24ccd402-4f8f-4b22-99e4-94dd7ff815f3" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock InsertNewCustomerData" doc:id="3b8b3c13-0bda-408f-8bce-505ce7883fa2" processor="db:insert">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="c07be443-e2dd-4377-b989-7158d9445df0" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_1.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="3ae9eccd-7123-4beb-a671-c5437e5e6854" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="8dc93e3d-9a14-452d-8707-12e25791d8fd" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_4.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_5.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_6.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Send" doc:id="16afc36f-a206-4df7-b696-a79bff575db8" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="4e6b85da-f68b-43fb-b0dd-2fec5be9c4ea" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					
+					<munit-tools:error typeId="EMAIL:CONNECTIVITY" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_8.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_9.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_10.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Create object" doc:id="892287c7-6fba-4156-ab81-30b3982d5cf8" processor="s3:create-object">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="45843010-7c1c-4b98-9aed-46d2d32a1b15" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_12.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_13.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_14.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_15.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_16.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectAllDetailsFlowReference" doc:id="4a26c952-99fb-4083-af62-fbe043aba12d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="10be8c2d-7a08-4cec-9d19-c95088dde39a" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_payload4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_17.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_18.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_19.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_20.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountSubFlowcreate\mock_variable_21.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="82e74000-c580-44eb-867c-9fc711070230" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcreateAccountSubFlowcreate\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcreateAccountSubFlowcreate\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountSubFlowcreate\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="55cd709f-bf3c-46ec-b1ea-9f2de09b5ef6" >
+				<flow-ref doc:name="Flow-ref to post-createAccountSub_Flow" doc:id="1759372f-6487-4d19-b856-f10ca4ffa87b" name="post-createAccountSub_Flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="eb4bb5fd-8f8d-4ca2-b84d-b4cd70b99996" >
+						<logger level="INFO" doc:name="Logger" doc:id="af5e3d85-1a92-4828-a83a-9ffe3742a8cf" message="*****continue******"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="62776c94-b253-47d5-a8b4-03f354c37a41" expression="#[error]" is="#[MunitTools::equalTo(error.description)]"/>
+
+		</munit:validation>
+	
+</munit:test>
+
+
+</mule>

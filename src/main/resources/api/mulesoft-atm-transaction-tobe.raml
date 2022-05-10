@@ -1,0 +1,116 @@
+#%RAML 1.0
+title: muleSoft-atm-transaction-tobe
+description: This is an ATM Transaction api.
+version: 1.0
+types:
+  myType1: !include DataTypes/createAccountDataType.raml
+  myType2: !include DataTypes/checkBalanceDataType.raml
+  myType3: !include DataTypes/withDrawDataType.raml
+  myType4: !include DataTypes/unblockDataType.raml
+
+/createAccount:
+  post:
+    queryParameters:
+      customerName:
+        description: The customerName's in Full name 
+        type: string
+        required: true
+        maxLength: 45
+        minLength: 4
+        example: Tobe Geb
+      bank:
+        enum: [ICICI,AXIS,HDFC]
+        required: true
+      type:
+        enum: [savings,current]
+      branchName:
+        type: string
+        required: true
+        maxLength: 10
+        minLength: 4
+    body:
+      application/json:
+        type: myType1
+        example:
+          {accountNum: "1234567890",
+           atmPin: "1234",
+           ifscCode: "1234",
+           depositAmount: 12.23,
+           mailId: "123155",
+           contact: "12525"}    
+    responses:
+      201:
+        body:
+          application/json:
+            example:
+              {
+                status: "201",
+                message: "Account Created Successfully with Account Number 1234567890"
+              }
+/checkBalance:
+  post:
+    queryParameters:
+      bank:
+        enum: [ICICI,AXIS,HDFC]
+      type:
+        enum: [savings,current]
+    body:
+      application/json:
+        type: myType2
+        example:
+          { accountNum: "1234512345",
+            atmPin: "1234",
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                status: "200",
+                message: "Your total balance is 12354.01 as on  20-May-2020"
+              }
+/withDraw:
+  post:
+    queryParameters:
+      bank:
+        enum: [ICICI,AXIS,HDFC]
+      type:
+        enum: [savings,current]
+    body:
+      application/json:
+        type: myType3
+        example: {
+          accountNum: "1234512345",
+          atmPin: "1234",
+          amountToBeWithdraw: 125.05,
+        }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                status: 200,
+                message: "Amount 2123.02 is debited. Your total balance is 4000.23"}
+/unblock:
+  put:
+    body:
+      application/json:
+        type: myType4
+        example:
+          {
+            user: "admin",
+            password: "admin",
+            accountNum: "1234554321",
+            bank: "ICICI"
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+              {
+                status: 200,
+                message: "Account 3166645435 is unblocked"
+              }

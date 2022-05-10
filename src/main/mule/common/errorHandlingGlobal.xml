@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="errorHandlingGlobalError_Handler" doc:id="0727d225-d75c-48d7-897f-9e58277755e1" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f4e0e304-d9c1-478e-a094-61d70c804ab3" type="ANY">
+			<ee:transform doc:name="Transform Message" doc:id="cc9a94e9-424b-4623-b0ed-ad7c1d20def1" >
+				<ee:message >
+					<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+error.description]]></ee:set-payload>
+				</ee:message>
+			</ee:transform>
+			<logger level="ERROR" doc:name="globalErrorLogger" doc:id="e4aaef92-0bae-40c2-bbd4-555f14ddab25" message="#[error.description]"/>
+		</on-error-propagate>
+	</error-handler>
+</mule>

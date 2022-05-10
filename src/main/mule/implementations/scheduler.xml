@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<flow name="schedulerFlow" doc:id="539dee3d-d916-4957-8352-021a56378564" >
+		<scheduler doc:name="Scheduler" doc:id="46217368-6673-4cce-ad91-428098ed3292" >
+			<scheduling-strategy >
+				<fixed-frequency timeUnit="DAYS" />
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="schedulerFlowStarted" doc:id="dcb3289c-f54b-44d2-bd95-4b3fca33394b" message="#[payload]"/>
+		<flow-ref doc:name="selectAllDetailsFlowReference" doc:id="61127cc7-f7f7-4c39-8ad3-8f041c2ebba6" name="selectAllDetailsFlow"/>
+		<logger level="INFO" doc:name="Logger" doc:id="2c624c78-ab3e-4206-8729-1aaa2e6327d8" message="#[payload]"/>
+		<ee:transform doc:name="mappedDataForEachScope" doc:id="3f2fd70e-9f4e-413d-984f-a402101b7cc2" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ((balance, index) -> {
+    totalBalance: balance.totalBalance,
+    mailId: balance.mailId
+}
+)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-variable value="#[[]]" doc:name="successRecordValues" doc:id="482c1a06-10d8-45c4-a467-4ad0eac76d96" variableName="successRecordValues"/>
+		<set-variable value="#[[]]" doc:name="failureRecordValues" doc:id="65dbbe41-a0bc-40c3-83f8-327f9f1a7b60" variableName="failureRecordValues"/>
+		<foreach doc:name="For Each" doc:id="f664a9e3-9718-437c-980a-e5c1a4c7b91f" >
+			<try doc:name="Try" doc:id="51a5e7dd-b782-4ab9-a6ec-788cd0199736" >
+				<email:send doc:name="totalBalanceForEachSend" doc:id="828153ef-0637-4f8f-aa3a-eec084a7b7c1" config-ref="Email_SMTP" fromAddress="gebraet@gmail.com" subject="Today's balance !">
+				<email:to-addresses>
+					<email:to-address value="#[payload.mailId]" />
+				</email:to-addresses>
+				<email:body contentType="text/plain">
+					<email:content><![CDATA[#["Your today's total balance is " ++ payload.totalBalance]]]></email:content>
+				</email:body>
+			</email:send>
+				<set-variable value="#[output application/json --- vars.successRecordValues + payload]" doc:name="successRecordValues" doc:id="2590c98f-defd-4397-9d49-20ec7d35e026" variableName="successRecordValues"/>
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="a81be86b-3e32-4441-b675-5ff2bb27895e" >
+						<set-payload value="#[payload]" doc:name="Set Payload" doc:id="176808fb-bb8c-4cd6-b1c1-ccbac33b92a1" />
+						<set-variable value="#[output application/json --- vars.failureRecordValues + payload]" doc:name="failureRecordValues" doc:id="699e6e50-e327-491c-863e-54731c8b221e" variableName="failureRecordValues"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+		</foreach>
+		<logger level="INFO" doc:name="schedulerFlowEnded" doc:id="4bae7446-7ec0-4a80-81d4-f89567fea508" message="#[payload]" />
+	</flow>
+</mule>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="scheduler-suite.xml" />
+	<munit:test name="scheduler-suite-schedulerFlowTest" doc:id="cd4e5bdd-e169-4185-9717-2f759805a02e" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="56483815-df5b-44b6-a720-49d1e5fee03a" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="61127cc7-f7f7-4c39-8ad3-8f041c2ebba6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[[&#10;  {&#10;    "atmPin": "1171",&#10;    "accountType": "savings",&#10;    "phoneNumber": "7032545600",&#10;    "ifscCode": "2291",&#10;    "wrongPin": 0,&#10;    "accountStatus": "Active",&#10;    "custAccNum": "1115167451",&#10;    "mailId": "simreteaab@gmail.com",&#10;    "pk": 1,&#10;    "bankName": "AXIS",&#10;    "transactionTimeStamp": "2022-01-25-03:4:55",&#10;    "totalBalance": 2000.000000000,&#10;    "custName": "Andromeda",&#10;    "branchName": "Maryland"&#10;  }&#10;]]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<set-payload value='#[[&#10;  {&#10;    "atmPin": "1171",&#10;    "accountType": "savings",&#10;    "phoneNumber": "7032545600",&#10;    "ifscCode": "2291",&#10;    "wrongPin": 0,&#10;    "accountStatus": "Active",&#10;    "custAccNum": "1115167451",&#10;    "mailId": "simreteaab@gmail.com",&#10;    "pk": 1,&#10;    "bankName": "AXIS",&#10;    "transactionTimeStamp": "2022-01-25-03:4:55",&#10;    "totalBalance": 2000.000000000,&#10;    "custName": "Andromeda",&#10;    "branchName": "Maryland"&#10;  }&#10;]]' doc:name="Set Payload" doc:id="ab049ce2-aca9-4b3a-ac34-811ca63599a3" mimeType="application/java"/>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to schedulerFlow" doc:id="76b2b724-ee8e-4ffa-9333-ad43c0d6beba" name="schedulerFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert-that doc:name="Assert that" doc:id="bbe08520-2e4f-4774-8939-ae9c0ee7680c" expression="#[payload]" is='#[MunitTools::equalTo(vars.successRecordValues)]'/>
+		</munit:validation>
+	</munit:test>
+
+	<munit:test name="scheduler-suite-error" doc:id="cd4e5bdd-e169-4185-9717-2f759805a02e" description="Test">
+		<munit:behavior>
+			<munit-tools:mock-when doc:name="Mock when" doc:id="56483815-df5b-44b6-a720-49d1e5fee03a" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="61127cc7-f7f7-4c39-8ad3-8f041c2ebba6" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value='#[[&#10;&#10;  {&#10;&#10;    "atmPin": "1171",&#10;&#10;    "accountType": "savings",&#10;&#10;    "phoneNumber": "7032545600",&#10;&#10;    "ifscCode": "2291",&#10;&#10;    "wrongPin": 0,&#10;&#10;    "accountStatus": "Active",&#10;&#10;    "custAccNum": "1115167451",&#10;&#10;    "mailId": "simreteaab",&#10;&#10;    "pk": 1,&#10;&#10;    "bankName": "AXIS",&#10;&#10;    "transactionTimeStamp": "2022-01-25-03:4:55",&#10;&#10;    "totalBalance": 2000.000000000,&#10;&#10;    "custName": "Andromeda",&#10;&#10;    "branchName": "Maryland"&#10;&#10;  }&#10;&#10;]]' mediaType="application/java" encoding="UTF-8" />
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<set-payload value='#[[&#10;&#10;  {&#10;&#10;    "atmPin": "1171",&#10;&#10;    "accountType": "savings",&#10;&#10;    "phoneNumber": "7032545600",&#10;&#10;    "ifscCode": "2291",&#10;&#10;    "wrongPin": 0,&#10;&#10;    "accountStatus": "Active",&#10;&#10;    "custAccNum": "1115167451",&#10;&#10;    "mailId": "simreteaab",&#10;&#10;    "pk": 1,&#10;&#10;    "bankName": "AXIS",&#10;&#10;    "transactionTimeStamp": "2022-01-25-03:4:55",&#10;&#10;    "totalBalance": 2000.000000000,&#10;&#10;    "custName": "Andromeda",&#10;&#10;    "branchName": "Maryland"&#10;&#10;  }&#10;&#10;]]' doc:name="Set Payload" doc:id="ab049ce2-aca9-4b3a-ac34-811ca63599a3" mimeType="application/java"/>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="aad00ffe-8120-48da-8b49-3c3fc55c7e47" >
+				<flow-ref doc:name="Flow-ref to schedulerFlow" doc:id="76b2b724-ee8e-4ffa-9333-ad43c0d6beba" name="schedulerFlow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="246f1bc2-0c0d-4256-a77c-042ce8492d1f" >
+						<logger level="INFO" doc:name="Logger" doc:id="8462e7af-2b2b-4f21-aac6-fbb5bf6c4ac1" message="*******continue*******"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="a5c13bf9-98ad-4a0a-b5dd-c9c0ab72951f" expression="#[payload]" is="#[MunitTools::equalTo(vars.failureRecordValues)]"/>
+
+		</munit:validation>
+	
+</munit:test>
+</mule>

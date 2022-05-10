@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:validation="http://www.mulesoft.org/schema/mule/validation"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<sub-flow name="post-checkBalanceSub_Flow" doc:id="2b1787ab-c1d7-46d2-89eb-c1d2ccc066af" >
+		<logger level="INFO" doc:name="post-checkBalanceFlowStarted" doc:id="01122d62-2f7d-4766-9a74-7ecff6f7c3b5" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="7042e3c1-b0d8-4ff3-b04c-92581eca943e" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="atmQpar" ><![CDATA[%dw 2.0
+output application/java
+---
+attributes.queryParams]]></ee:set-variable>
+				<ee:set-variable variableName="atmPay" ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="selectInPutParamsFlowReference" doc:id="ea12f2f9-b8cf-4401-a09c-443886285eb2" name="selectInPutParamsFlow" />
+		<ee:transform doc:name="Transform Message" doc:id="0042e12f-8883-4327-84ed-088e39ff5e82">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+if(payload != []) payload.accountStatus[0]
+else "Account " ++ vars.atmPay.accountNum ++ " does not exist. Enter Valid Details."
+]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+		<logger level="INFO" doc:name="mappedDataForChoice" doc:id="b1f59b3e-1202-49d3-9927-002d0781c221" message="#[payload]"/>
+		<choice doc:name="Choice" doc:id="179ad093-bf96-4f78-bb00-f8d4cf98673f">
+					<when expression='#[payload == "Active"]'>
+						<choice doc:name="Choice" doc:id="a295f211-20c7-4bed-86d7-de6cf4f636ec">
+							<when expression="#[vars.atmPay.atmPin != vars.selInpVar.atmPin[0]]">
+						<try doc:name="Try" doc:id="b8a427ee-74ae-48f8-832d-49a7f9b2e822" >
+							<db:update doc:name="Update" doc:id="e538824b-cc66-461f-a1b2-9781a5ee4a1e" config-ref="Database_Config">
+									<reconnect />
+								<db:sql><![CDATA[update Bank_Transactions set wrongPin=wrongPin+1, accountStatus=(case when wrongPin in (0,1,2) then 'Active' when wrongPin=3 then 'Blocked' end) where pk=:pk and wrongPin=:wrongPin; 
+
+]]></db:sql>
+									<db:input-parameters><![CDATA[#[{
+	pk: vars.selInpVar.pk[0],
+	wrongPin: vars.selInpVar.wrongPin[0]
+}]]]></db:input-parameters>
+								</db:update>
+							<error-handler >
+								<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="9e5c9fa6-b13b-40b8-9c6c-bbcb325d63f9" type="ANY">
+									<ee:transform doc:name="Transform Message" doc:id="13b7c4dd-fb7b-4a83-9daa-47872feb13e1" >
+										<ee:message >
+											<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+error]]></ee:set-payload>
+										</ee:message>
+									</ee:transform>
+								</on-error-propagate>
+							</error-handler>
+						</try>
+						<ee:transform doc:name="clientMessages" doc:id="7f2219aa-a8c2-47c3-83b6-ad698ba24f14">
+									<ee:message>
+										<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+
+	if(vars.selInpVar.wrongPin[0] ==0) "Login Attempt Failed .Attempts left : 2" 
+	else if(vars.selInpVar.wrongPin[0] ==1) "Login Attempt Failed .Attempts left : 1"
+	else "Maximum Attempts reached .Your Account " ++ vars.selInpVar.custAccNum[0] ++ " is temporarily blocked. Please reach nearest Branch"
+	
+]]></ee:set-payload>
+									</ee:message>
+								</ee:transform>
+						<ee:transform doc:name="email_Messages-Variable" doc:id="35307587-bc7a-4413-956a-97c7cb77fd30">
+							<ee:message>
+							</ee:message>
+							<ee:variables >
+								<ee:set-variable variableName="emailVars" ><![CDATA[%dw 2.0
+output application/java
+---
+if(payload == "Login Attempt Failed .Attempts left : 2" or payload == "Login Attempt Failed .Attempts left : 1") {subject: "Failed Attempt !",
+  body: "This is to inform you that there’s a failed attempt happened while transaction . Your Account will be blocked after 3 attempts."
+}
+else {subject: "Account Blocked ! ", body: "This is to inform you that Your Account has been blocked due to 3 failed attempts. Please reach out nearest branch to unblock "}]]></ee:set-variable>
+							</ee:variables>
+						</ee:transform>
+						<try doc:name="Try" doc:id="01e2a8e0-c763-4020-ac96-9b23a5179667" >
+							<email:send doc:name="Send" doc:id="f7ebfd20-74a6-415c-b282-8e5c1e4a29c4" config-ref="Email_SMTP" fromAddress="${secure::email.userE}" subject="#[vars.emailVars.subject]">
+							<email:to-addresses>
+								<email:to-address value="#[vars.selInpVar.mailId[0]]" />
+							</email:to-addresses>
+							<email:body contentType="text/plain">
+								<email:content><![CDATA[#[vars.emailVars.body]]]></email:content>
+							</email:body>
+						</email:send>
+							<error-handler >
+								<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="a0e2b535-9053-41f6-828e-f8ee334dae26" type="EMAIL:CONNECTIVITY">
+									<ee:transform doc:name="Transform Message" doc:id="1c3009d3-17ab-4ba1-a2d1-2a098b6f712c" >
+										<ee:message >
+											<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+error]]></ee:set-payload>
+										</ee:message>
+									</ee:transform>
+								</on-error-propagate>
+							</error-handler>
+						</try>
+							</when>
+					<otherwise>
+						<ee:transform doc:name="Transform Message" doc:id="ced149e9-ad83-460d-9801-504324492374">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+	status: 200,
+    message: "Your total balance is " ++ vars.selInpVar.totalBalance[0] ++ " as of today " ++ now() as String {format: "y-MM-dd"}
+}]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+							</otherwise>
+						</choice>
+					</when>
+					<otherwise>
+						<ee:transform doc:name="Transform Message" doc:id="9ff9bfe3-aed6-4ed7-a5f8-79765bac229a">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+if(payload == "Blocked") "Account " ++ vars.selInpVar.custAccNum[0] ++ " temporarily blocked. Please visit nearest Branch"
+else payload]]></ee:set-payload>
+					</ee:message>
+				</ee:transform>
+
+					</otherwise>
+				</choice>
+		<logger level="INFO" doc:name="post-checkBalanceFlowEnded" doc:id="e7704124-84a7-4aaf-9157-550dd8909ff0" message="#[payload]" />
+	</sub-flow>
+</mule>

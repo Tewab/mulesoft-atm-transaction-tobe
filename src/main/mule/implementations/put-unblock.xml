@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<sub-flow name="put-unblockSub_Flow" doc:id="98c13072-f9be-4fb0-9280-18290f540f1a" >
+		<logger level="INFO" doc:name="put-unblockFlowStarted" doc:id="81509f94-adba-4666-b889-dca6d0ea80bc" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="7e95196e-a48e-44ce-bcc1-6559c61f3a69" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="unbPaylo" ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<flow-ref doc:name="selInpPayFlowReference" doc:id="c50a7445-1353-4cb9-beb7-0dbded4a72ba" name="selInpPayFlow"/>
+		<ee:transform doc:name="Transform Message" doc:id="fa20cef3-0244-4eed-97ae-c05c9391bd00">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+ if(vars.unbPaylo.user == "admin" and vars.unbPaylo.password == "admin" and payload != []) payload.accountStatus[0]
+else "Account " ++ vars.unbPaylo.accountNum ++ " does not exist. Enter Valid Details"]]></ee:set-payload>
+					</ee:message>
+			<ee:variables >
+			</ee:variables>
+				</ee:transform>
+		<logger level="INFO" doc:name="mappedDataForChoice" doc:id="910937d4-e522-4879-8dab-1cc0b356ff55" message="#[payload]"/>
+		<choice doc:name="Choice" doc:id="4340dc61-036a-4fca-9ccd-57582b69292e">
+					<when expression='#[payload == "Blocked"]'>
+						<try doc:name="Try" doc:id="c857beee-f9c8-47e7-bb20-96783bf91919" >
+					<db:update doc:name="Update" doc:id="f4857f49-cccd-4231-9af5-09a81b9a3c33" config-ref="Database_Config">
+									<reconnect />
+						<db:sql><![CDATA[update Bank_Transactions set wrongPin=0, accountStatus='Active' where pk=:pk;]]></db:sql>
+									<db:input-parameters><![CDATA[#[{
+	pk: vars.selInpPay.pk[0]
+}]]]></db:input-parameters>
+								</db:update>
+					<error-handler >
+						<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="52841c3e-8815-4bdc-80de-380ab50ec8da" type="ANY">
+							<ee:transform doc:name="Transform Message" doc:id="6f059d53-54dd-4d49-8250-69c9a96a296c" >
+								<ee:message >
+									<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+error]]></ee:set-payload>
+								</ee:message>
+							</ee:transform>
+						</on-error-propagate>
+					</error-handler>
+				</try>
+				<try doc:name="Try" doc:id="137872a7-f152-4855-bb43-aaf675a7b9cb" >
+					<email:send doc:name="Send" doc:id="8fa69ffc-3602-4d50-90d6-d5cdfcc3d308" config-ref="Email_SMTP" fromAddress="${secure::email.userE}" subject="Account Unblocked ! ">
+					<email:to-addresses>
+						<email:to-address value="#[vars.selInpPay.mailId[0]]" />
+					</email:to-addresses>
+					<email:body contentType="text/plain">
+						<email:content><![CDATA[#["This is to inform you that Your Account has been unblocked. "]]]></email:content>
+					</email:body>
+				</email:send>
+					<error-handler >
+						<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="d642cd3c-2801-4029-8b3d-b2dbc240e1ef" type="EMAIL:CONNECTIVITY">
+							<ee:transform doc:name="Transform Message" doc:id="2031760e-2ae5-4122-9b67-e2724232a22b" >
+								<ee:message >
+									<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+error]]></ee:set-payload>
+								</ee:message>
+							</ee:transform>
+						</on-error-propagate>
+					</error-handler>
+				</try>
+				<ee:transform doc:name="Transform Message" doc:id="a91c14cc-3f59-4c34-922d-f760c09b4775">
+									<ee:message>
+										<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+"Account " ++ vars.selInpPay.custAccNum[0] ++ " is Unblocked."]]></ee:set-payload>
+									</ee:message>
+								</ee:transform>
+					</when>
+			<otherwise>
+						<ee:transform doc:name="Transform Message" doc:id="8c51a9bd-17a6-4e8c-93a3-96468d42d280">
+							<ee:message>
+								<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+if(payload == "Active")  "Account " ++ vars.selInpPay.custAccNum[0] ++ " is Active."
+else payload
+]]></ee:set-payload>
+							</ee:message>
+						</ee:transform>
+					</otherwise>
+				</choice>
+		<logger level="INFO" doc:name="put-unblockFlowEnded" doc:id="f2f114da-962b-4b1a-a4ce-50d46d02d796" message="#[payload]"/>
+	</sub-flow>
+</mule>

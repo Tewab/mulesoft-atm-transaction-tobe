@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="post-checkBalance-suite.xml" />
+	<munit:test name="post-checkBalanceSub_Flow-wrongPin" doc:id="8230bcf5-5197-4f9b-9e06-925fa0b23b66" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Send" doc:id="65ed1d7e-e73e-43a7-b4c7-cadc98aaab8f" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f7ebfd20-74a6-415c-b282-8e5c1e4a29c4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_.dwl')]" />
+						<munit-tools:variable key="emailVars" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Update" doc:id="861a8303-103e-47c1-bdec-9906132bf3ee" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e538824b-cc66-461f-a1b2-9781a5ee4a1e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_5.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_6.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_8.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="53acde05-3ab9-4165-9b52-3d8cbca95848" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ea12f2f9-b8cf-4401-a09c-443886285eb2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_9.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_10.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_12.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3a58c730-7edc-474a-98dd-89f642fc7b09" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-checkBalanceSub_Flow" doc:id="7a7d55ac-cc19-4a30-820e-887bee708549" name="post-checkBalanceSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="21f106e2-eb57-40a8-b6d2-abd12f8d4f1d" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcheckBalanceSubFlowwrongPin::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post-checkBalanceSub_Flow-blocked" doc:id="3d7f916a-118b-44a9-b34b-e4f768f28fb0" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="ddfd4aef-2802-4a75-a82b-fe1cd9738085" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ea12f2f9-b8cf-4401-a09c-443886285eb2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowblocked\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowblocked\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowblocked\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowblocked\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowblocked\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="8e648f08-6b2e-43d5-aea1-076e61c2c156" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcheckBalanceSubFlowblocked\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcheckBalanceSubFlowblocked\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowblocked\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-checkBalanceSub_Flow" doc:id="d66404d8-c9f4-4691-adcf-d8652edb9fa2" name="post-checkBalanceSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="e5f0a5ac-e4c2-4daf-9067-5c78144cf728" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcheckBalanceSubFlowblocked::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+	<munit:test name="post-checkBalanceSub_Flow-updateError" doc:id="8230bcf5-5197-4f9b-9e06-925fa0b23b66" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Send" doc:id="65ed1d7e-e73e-43a7-b4c7-cadc98aaab8f" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f7ebfd20-74a6-415c-b282-8e5c1e4a29c4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_.dwl')]" />
+						<munit-tools:variable key="emailVars" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Update" doc:id="861a8303-103e-47c1-bdec-9906132bf3ee" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e538824b-cc66-461f-a1b2-9781a5ee4a1e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					
+					<munit-tools:error typeId="ANY" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_5.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_6.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_8.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="53acde05-3ab9-4165-9b52-3d8cbca95848" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ea12f2f9-b8cf-4401-a09c-443886285eb2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_9.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_10.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_12.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3a58c730-7edc-474a-98dd-89f642fc7b09" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="103da4eb-e0a1-4805-af81-67a1e9b3aab0" >
+				<flow-ref doc:name="Flow-ref to post-checkBalanceSub_Flow" doc:id="7a7d55ac-cc19-4a30-820e-887bee708549" name="post-checkBalanceSub_Flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6d247947-8b4e-4e4c-b7e9-051291bf9f94" >
+						<logger level="INFO" doc:name="Logger" doc:id="9806e968-a7f2-4e70-bad6-22f9c7fcfe32" message="*******continue******"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="d7feb9e1-7a70-4992-8b10-8a0b063b730d" expression="#[error]" is="#[MunitTools::equalTo(error.description)]"/>
+
+		</munit:validation>
+	
+</munit:test>
+
+	<munit:test name="post-checkBalanceSub_Flow-emailError" doc:id="8230bcf5-5197-4f9b-9e06-925fa0b23b66" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Send" doc:id="65ed1d7e-e73e-43a7-b4c7-cadc98aaab8f" processor="email:send">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="f7ebfd20-74a6-415c-b282-8e5c1e4a29c4" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					
+					<munit-tools:error typeId="EMAIL:CONNECTIVITY" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_.dwl')]" />
+						<munit-tools:variable key="emailVars" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock Update" doc:id="861a8303-103e-47c1-bdec-9906132bf3ee" processor="db:update">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="e538824b-cc66-461f-a1b2-9781a5ee4a1e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_5.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_6.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_7.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_8.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="53acde05-3ab9-4165-9b52-3d8cbca95848" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ea12f2f9-b8cf-4401-a09c-443886285eb2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_payload2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_9.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_10.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_11.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\mock_variable_12.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="3a58c730-7edc-474a-98dd-89f642fc7b09" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubFlowwrongPin\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="be9f9b92-1e86-45f6-9c4c-2a5cad134c3d" >
+				<flow-ref doc:name="Flow-ref to post-checkBalanceSub_Flow" doc:id="7a7d55ac-cc19-4a30-820e-887bee708549" name="post-checkBalanceSub_Flow" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="d11c62f9-2977-4f75-af23-9227ce83fcc8" >
+						<logger level="INFO" doc:name="Logger" doc:id="c92ffeeb-debf-4140-bc01-bedd3a569e7b" message="********continue********"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="c1dca219-7843-489e-af36-b75c600fb96b" expression="#[error]" is="#[MunitTools::equalTo(error.description)]"/>
+
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="post-checkBalanceSub_flow-correct" doc:id="57b3ae53-8d9f-449d-a745-e14c58e43591" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock selectInPutParamsFlowReference" doc:id="1a91d69a-8c91-4dcb-90c6-3cc10e1fd613" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="ea12f2f9-b8cf-4401-a09c-443886285eb2" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://postcheckBalanceSubflowcorrect\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubflowcorrect\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubflowcorrect\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubflowcorrect\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalanceSubflowcorrect\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="a6006718-a475-4e0b-86a0-ef4eed2186a4" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcheckBalanceSubflowcorrect\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcheckBalanceSubflowcorrect\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalanceSubflowcorrect\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post-checkBalanceSub_Flow" doc:id="5399dbde-bd23-4366-a09c-52e6713b0ba4" name="post-checkBalanceSub_Flow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="214edca4-47d1-4c9a-9247-c3455b41343b" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcheckBalanceSubflowcorrect::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+</mule>

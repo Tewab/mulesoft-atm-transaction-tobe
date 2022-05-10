@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="mulesoft-atm-transaction-tobe-suite.xml" />
+	
+		<munit:test name="mulesoft-atm-transaction-tobe-main-badRequestError" doc:id="49019050-8972-472d-909f-fce7ade862d1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="95855e3a-85f6-4bf2-b6bd-5f5f97b08c48" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0947fcd2-fc10-4965-86b4-834f6ffb6b17" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:BAD_REQUEST" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="97b31d63-8154-4dce-b64b-a7c99d32ae4d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="75a156b9-4397-4b58-bd71-45b1a8dd4446" >
+				<flow-ref doc:name="Flow-ref to mulesoft-atm-transaction-tobe-main" doc:id="2e1843f3-1bd7-4781-aa21-e534e04e98a0" name="mulesoft-atm-transaction-tobe-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ee8c38c8-d497-4f62-b245-f547e6b5c9cd" >
+						<logger level="INFO" doc:name="Logger" doc:id="2598462a-0fa8-451e-8972-fdbfe5d8ebf3" message="***************continue*****************"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dd149a17-95c5-4861-9513-3bb5b210afe4" expression="#[payload.message]" is='#[MunitTools::equalTo("Bad request")]'/>
+
+		</munit:validation>
+	
+</munit:test>
+
+		<munit:test name="mulesoft-atm-transaction-tobe-main-notFoundError" doc:id="49019050-8972-472d-909f-fce7ade862d1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="95855e3a-85f6-4bf2-b6bd-5f5f97b08c48" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0947fcd2-fc10-4965-86b4-834f6ffb6b17" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_FOUND" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="97b31d63-8154-4dce-b64b-a7c99d32ae4d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="75a156b9-4397-4b58-bd71-45b1a8dd4446" >
+				<flow-ref doc:name="Flow-ref to mulesoft-atm-transaction-tobe-main" doc:id="2e1843f3-1bd7-4781-aa21-e534e04e98a0" name="mulesoft-atm-transaction-tobe-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ee8c38c8-d497-4f62-b245-f547e6b5c9cd" >
+						<logger level="INFO" doc:name="Logger" doc:id="2598462a-0fa8-451e-8972-fdbfe5d8ebf3" message="***************continue*****************"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dd149a17-95c5-4861-9513-3bb5b210afe4" expression="#[payload.message]" is='#[MunitTools::equalTo("Resource not found")]'/>
+
+		</munit:validation>
+	
+</munit:test>
+
+		<munit:test name="mulesoft-atm-transaction-tobe-main-methodNotAllowedError" doc:id="49019050-8972-472d-909f-fce7ade862d1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="95855e3a-85f6-4bf2-b6bd-5f5f97b08c48" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0947fcd2-fc10-4965-86b4-834f6ffb6b17" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:METHOD_NOT_ALLOWED" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="97b31d63-8154-4dce-b64b-a7c99d32ae4d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="75a156b9-4397-4b58-bd71-45b1a8dd4446" >
+				<flow-ref doc:name="Flow-ref to mulesoft-atm-transaction-tobe-main" doc:id="2e1843f3-1bd7-4781-aa21-e534e04e98a0" name="mulesoft-atm-transaction-tobe-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ee8c38c8-d497-4f62-b245-f547e6b5c9cd" >
+						<logger level="INFO" doc:name="Logger" doc:id="2598462a-0fa8-451e-8972-fdbfe5d8ebf3" message="***************continue*****************"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dd149a17-95c5-4861-9513-3bb5b210afe4" expression="#[payload.message]" is='#[MunitTools::equalTo("Method not allowed")]'/>
+
+		</munit:validation>
+	
+</munit:test>
+
+		<munit:test name="mulesoft-atm-transaction-tobe-main-notAcceptableError" doc:id="49019050-8972-472d-909f-fce7ade862d1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="95855e3a-85f6-4bf2-b6bd-5f5f97b08c48" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0947fcd2-fc10-4965-86b4-834f6ffb6b17" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_ACCEPTABLE" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="97b31d63-8154-4dce-b64b-a7c99d32ae4d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="75a156b9-4397-4b58-bd71-45b1a8dd4446" >
+				<flow-ref doc:name="Flow-ref to mulesoft-atm-transaction-tobe-main" doc:id="2e1843f3-1bd7-4781-aa21-e534e04e98a0" name="mulesoft-atm-transaction-tobe-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ee8c38c8-d497-4f62-b245-f547e6b5c9cd" >
+						<logger level="INFO" doc:name="Logger" doc:id="2598462a-0fa8-451e-8972-fdbfe5d8ebf3" message="***************continue*****************"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dd149a17-95c5-4861-9513-3bb5b210afe4" expression="#[payload.message]" is='#[MunitTools::equalTo("Not acceptable")]'/>
+
+		</munit:validation>
+	
+</munit:test>
+
+		<munit:test name="mulesoft-atm-transaction-tobe-main-unsupportedMediaTypeError" doc:id="49019050-8972-472d-909f-fce7ade862d1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="95855e3a-85f6-4bf2-b6bd-5f5f97b08c48" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0947fcd2-fc10-4965-86b4-834f6ffb6b17" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:UNSUPPORTED_MEDIA_TYPE" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="97b31d63-8154-4dce-b64b-a7c99d32ae4d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="75a156b9-4397-4b58-bd71-45b1a8dd4446" >
+				<flow-ref doc:name="Flow-ref to mulesoft-atm-transaction-tobe-main" doc:id="2e1843f3-1bd7-4781-aa21-e534e04e98a0" name="mulesoft-atm-transaction-tobe-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ee8c38c8-d497-4f62-b245-f547e6b5c9cd" >
+						<logger level="INFO" doc:name="Logger" doc:id="2598462a-0fa8-451e-8972-fdbfe5d8ebf3" message="***************continue*****************"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dd149a17-95c5-4861-9513-3bb5b210afe4" expression="#[payload.message]" is='#[MunitTools::equalTo("Unsupported media type")]'/>
+
+		</munit:validation>
+	
+</munit:test>
+
+		<munit:test name="mulesoft-atm-transaction-tobe-main-notImplementedError" doc:id="49019050-8972-472d-909f-fce7ade862d1" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock APIkit Router" doc:id="95855e3a-85f6-4bf2-b6bd-5f5f97b08c48" processor="apikit:router">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="0947fcd2-fc10-4965-86b4-834f6ffb6b17" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:error typeId="APIKIT:NOT_IMPLEMENTED" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="httpStatus" value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_2.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_4.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\mock_variable_5.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			
+
+</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="97b31d63-8154-4dce-b64b-a7c99d32ae4d" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://mulesoftatmtransactiontobemainpositive\set-event_attributes.dwl')]" />
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution>
+			<try doc:name="Try" doc:id="75a156b9-4397-4b58-bd71-45b1a8dd4446" >
+				<flow-ref doc:name="Flow-ref to mulesoft-atm-transaction-tobe-main" doc:id="2e1843f3-1bd7-4781-aa21-e534e04e98a0" name="mulesoft-atm-transaction-tobe-main" />
+				<error-handler >
+					<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="ee8c38c8-d497-4f62-b245-f547e6b5c9cd" >
+						<logger level="INFO" doc:name="Logger" doc:id="2598462a-0fa8-451e-8972-fdbfe5d8ebf3" message="***************continue*****************"/>
+					</on-error-continue>
+				</error-handler>
+			</try>
+
+		</munit:execution>
+		<munit:validation>
+			<munit-tools:assert-that doc:name="Assert that" doc:id="dd149a17-95c5-4861-9513-3bb5b210afe4" expression="#[payload.message]" is='#[MunitTools::equalTo("Not Implemented")]'/>
+
+		</munit:validation>
+	
+</munit:test>
+	<munit:test name="post:\createAccount-main" doc:id="5f1db26c-5c16-4c8c-bbf9-83f2f002d715" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="788548b6-cd93-4579-8f79-f22ba4ecd725" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="101b5a8d-9afe-4aee-a1db-a75811856643" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postcreateAccountmain\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountmain\mock_variable_.dwl')]" />
+						<munit-tools:variable key="selectAll" value="#[output application/java --- readUrl('classpath://postcreateAccountmain\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmPay" value="#[output application/json --- readUrl('classpath://postcreateAccountmain\mock_variable_2.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/json --- readUrl('classpath://postcreateAccountmain\mock_variable_3.dwl')]" mediaType="application/json" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcreateAccountmain\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="923536c0-067f-4352-9dee-daafc0c5210f" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcreateAccountmain\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcreateAccountmain\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcreateAccountmain\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\createAccount:application\json:mulesoft-atm-transaction-tobe-config" doc:id="76f0fa4d-4bc8-497f-82ec-790d0df98b1d" name="post:\createAccount:application\json:mulesoft-atm-transaction-tobe-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="35c44c73-9a82-4f0b-91e0-de81fc3aa22b" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcreateAccountmain::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\withDraw-main" doc:id="a70f10bc-d3e8-4740-9c93-fe856c03be5d" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="89173435-7930-4db9-bcc5-3f48c80a4da2" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="5f107e8a-3f7f-4d37-9d62-79e273202c43" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postwithDrawmain\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postwithDrawmain\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postwithDrawmain\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postwithDrawmain\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postwithDrawmain\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="witPayl" value="#[output application/java --- readUrl('classpath://postwithDrawmain\mock_variable_4.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="6718a048-bd6e-4a58-8ea3-30b16c6383e0" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postwithDrawmain\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postwithDrawmain\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postwithDrawmain\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\withDraw:application\json:mulesoft-atm-transaction-tobe-config" doc:id="57e75743-aaa9-4875-a547-8a991075a3bf" name="post:\withDraw:application\json:mulesoft-atm-transaction-tobe-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="de9479d6-90a2-44e3-84ee-3a76a60dea5e" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postwithDrawmain::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="post:\checkBalance-main" doc:id="be0ef0d5-3670-4d2e-a93b-e66779c707d5" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="f6f6f656-6378-4a2c-a19b-96828276e6ed" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="9d0ea3ea-098c-4c55-91ac-684bebf0d89e" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/json --- readUrl('classpath://postcheckBalancemain\mock_payload.dwl')]" mediaType="application/json" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalancemain\mock_variable_.dwl')]" />
+						<munit-tools:variable key="atmPay" value="#[output application/java --- readUrl('classpath://postcheckBalancemain\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="atmQpar" value="#[output application/java --- readUrl('classpath://postcheckBalancemain\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInpVar" value="#[output application/java --- readUrl('classpath://postcheckBalancemain\mock_variable_3.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="0ffc3235-e5e3-41af-bf7e-d998261b1a57" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://postcheckBalancemain\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://postcheckBalancemain\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://postcheckBalancemain\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to post:\checkBalance:application\json:mulesoft-atm-transaction-tobe-config" doc:id="73cc6b39-13d3-4e08-9585-aea2360c17f5" name="post:\checkBalance:application\json:mulesoft-atm-transaction-tobe-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="fe9128e7-5d1d-4914-817a-41b46e093f3d" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import postcheckBalancemain::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+	<munit:test name="put:\unblock-main" doc:id="5ff0eb51-5ba3-40d3-9a3a-7274c8959ccd" >
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock Flow Reference" doc:id="c6113a36-f2c3-4f40-bac1-b25c7b640f6d" processor="flow-ref">
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="a7ad7750-f694-4941-812f-3ab2ba036b19" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[output application/java --- readUrl('classpath://putunblockmain\mock_payload.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					<munit-tools:variables >
+						<munit-tools:variable key="outboundHeaders" value="#[readUrl('classpath://putunblockmain\mock_variable_.dwl')]" />
+						<munit-tools:variable key="unbPaylo" value="#[output application/java --- readUrl('classpath://putunblockmain\mock_variable_1.dwl')]" mediaType="application/java" encoding="UTF-8" />
+						<munit-tools:variable key="selInppay" value="#[output application/java --- readUrl('classpath://putunblockmain\mock_variable_2.dwl')]" mediaType="application/java" encoding="UTF-8" />
+					</munit-tools:variables>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit:set-event doc:name="Set Input" doc:id="b3c64a22-095c-4474-aac4-24f6cd189db1" >
+				<munit:payload value="#[output application/json --- readUrl('classpath://putunblockmain\set-event_payload.dwl')]" encoding="UTF-8" mediaType="application/json" />
+				<munit:attributes value="#[readUrl('classpath://putunblockmain\set-event_attributes.dwl')]" />
+				<munit:variables >
+					<munit:variable key="outboundHeaders" value="#[readUrl('classpath://putunblockmain\set-event_variable_.dwl')]" />
+				</munit:variables>
+			</munit:set-event>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to put:\unblock:application\json:mulesoft-atm-transaction-tobe-config" doc:id="6eb926ff-0c6f-4f14-b743-60ebb41b8d70" name="put:\unblock:application\json:mulesoft-atm-transaction-tobe-config"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert payload" doc:id="4b633d83-75bb-4bf1-904c-42068927ef61" message="The payload does not match">
+				<munit-tools:that ><![CDATA[#[%dw 2.0
+import putunblockmain::assert_expression_payload
+---
+assert_expression_payload::main({payload: payload, attributes: attributes, vars: vars})]]]></munit-tools:that>
+			</munit-tools:assert>
+		</munit:validation>
+	</munit:test>
+
+
+</mule>
