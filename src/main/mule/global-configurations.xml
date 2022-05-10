@@ -42,7 +42,7 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 	</s3:config>
 	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="778f00f4-121d-430f-9b8e-b67faccc498c" file="${env}.yaml" key="${secure.key}" >
 	</secure-properties:config>
-	<global-property doc:name="Global Property" doc:id="234c699c-2ab3-4a9f-b28c-36d94aae6dfb" name="env" value="dev" />
+	<!-- <global-property doc:name="Global Property" doc:id="234c699c-2ab3-4a9f-b28c-36d94aae6dfb" name="env" value="dev" /> -->
 	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="7d52ca2d-959f-4de8-985a-1ff0a4280cb9" flowRef="mulesoft-atm-transaction-tobe-main" />
 
 </mule>
