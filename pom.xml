@@ -148,14 +148,14 @@
 				<artifactId>munit-maven-plugin</artifactId>
 				<version>${munit.version}</version>
 				<executions>
-					<!-- <execution>
+					<execution>
 						<id>test</id>
 						<phase>test</phase>
 						<goals>
 							<goal>test</goal>
 							<goal>coverage-report</goal>
 						</goals>
-					</execution> -->
+					</execution>
 				</executions>
 				<configuration>
 					<coverage>
